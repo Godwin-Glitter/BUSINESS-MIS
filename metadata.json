@@ -1,0 +1,6 @@
+{
+  "name": "IBMS Ghana - Dual Business Management",
+  "description": "Integrated offline-first business management system for Building Materials and Soft Drinks & Minerals businesses in Ghana with multi-user role isolation, POS, inventory, crate tracking, and financial reporting.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}

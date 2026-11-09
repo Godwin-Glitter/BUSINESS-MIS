@@ -1,0 +1,1221 @@
+# MASTER DEVELOPMENT PROMPT
+# INTEGRATED BUSINESS MANAGEMENT SYSTEM (IBMS)
+
+## 1. PROJECT OVERVIEW
+
+Act as a senior full-stack software engineer, database architect, UI/UX designer and business management systems developer.
+
+Build a complete, professional, secure and offline-first Integrated Business Management System (IBMS) for managing two independent businesses from one computer.
+
+The application will manage:
+
+**BUSINESS 1: BUILDING MATERIALS**
+A building materials shop that sells cement, iron rods, roofing sheets, nails, paints, plumbing materials, electrical materials, tiles, blocks and other construction products.
+
+**BUSINESS 2: SOFT DRINKS & MINERALS**
+A beverage business that sells soft drinks, bottled water, malt, energy drinks, fruit drinks and other beverages. It must also manage crates, bottles, empty containers and returns.
+
+The two businesses must operate independently within one application.
+
+They must have separate:
+- Users and access permissions.
+- Products and inventory.
+- Customers.
+- Suppliers.
+- Sales and purchases.
+- Expenses.
+- Credit transactions.
+- Debts and balances.
+- Financial records.
+- Dashboards.
+- Reports.
+
+The administrator can manage both businesses, but ordinary workers must only access the business assigned to their login accounts.
+
+The application must be suitable for real daily business operations.
+
+Do not build only a UI prototype. Build working features, persistent data storage, authentication, business logic and reporting.
+
+---
+
+# 2. TECHNOLOGY AND APPLICATION ARCHITECTURE
+
+Use a modern, maintainable full-stack architecture.
+
+Preferred frontend:
+- React.
+- TypeScript.
+- Tailwind CSS.
+- A professional component library where appropriate.
+- Lucide icons.
+
+Choose a reliable backend and database architecture that supports the requirements below.
+
+### Local and offline-first operation
+
+The application will initially be used on one shared computer by multiple users.
+
+It must:
+- Work without an internet connection after initial installation and setup.
+- Save records persistently on the computer.
+- Retain data after the application is closed or the computer restarts.
+- Avoid requiring a continuous cloud connection.
+- Support manual backup and restoration.
+- Support exporting business records.
+- Be installable on a Windows computer where the selected architecture permits.
+
+Use a suitable persistent local database.
+
+Preferred options:
+- SQLite with a compatible local backend or desktop runtime.
+- IndexedDB with Dexie if building a browser-based application.
+
+Do not use temporary in-memory storage or browser session storage for business records.
+
+If a browser-only architecture cannot reliably satisfy a requirement, explain the limitation and implement the most suitable alternative.
+
+Do not falsely claim that the application works offline, uses SQLite or performs scheduled backups unless those capabilities have actually been implemented and tested.
+
+### Application structure
+
+Use modular architecture so that each business module can be developed and maintained independently.
+
+Keep shared functionality such as authentication, user management, audit logs and backup management in the application foundation.
+
+All business records must have proper ownership and access controls.
+
+---
+
+# 3. AUTHENTICATION AND BUSINESS-SPECIFIC USER ACCESS
+
+THIS IS ONE OF THE MOST IMPORTANT REQUIREMENTS.
+
+The administrator must control which business each worker can access through their login credentials.
+
+### Administrator account
+
+Create an initial administrator setup process.
+
+The administrator must have access to:
+- Building Materials.
+- Soft Drinks & Minerals.
+- User management.
+- Both business dashboards independently.
+- Application settings.
+- Backup and restore.
+- Audit logs.
+- Reports for both businesses separately.
+
+The administrator must be able to create, edit, deactivate and manage all user accounts.
+
+### User creation
+
+When creating a worker account, the administrator must enter:
+
+1. Full name.
+2. Username.
+3. Password.
+4. Assigned business.
+5. Role.
+6. Account status.
+
+The assigned business must be selected during account creation.
+
+### Example of how access must work
+
+**Administrator**
+- Username: admin
+- Password: Set during secure initial setup.
+- Business access: Both businesses.
+
+**Worker A**
+- Username: building_worker
+- Password: Set by administrator.
+- Assigned business: Building Materials.
+
+**Worker B**
+- Username: drinks_worker
+- Password: Set by administrator.
+- Assigned business: Soft Drinks & Minerals.
+
+These are examples only. Do not hardcode these accounts or passwords.
+
+### Login behaviour
+
+After successful authentication:
+
+- The administrator should be able to select either business.
+- A worker assigned to Building Materials must automatically enter the Building Materials dashboard.
+- A worker assigned to Soft Drinks & Minerals must automatically enter the Soft Drinks & Minerals dashboard.
+- Ordinary workers must not see the business selection screen.
+- Ordinary workers must not have a business-switching option.
+
+### Strict business isolation
+
+A worker assigned to one business must never access the other business.
+
+Prevent access through:
+- Dashboard navigation.
+- Direct URLs.
+- Manual URL modification.
+- API requests.
+- Database queries.
+- Browser developer tools or client-side state manipulation.
+
+Enforce business permissions at the authentication, backend and data-access levels.
+
+Do not rely only on hiding navigation links.
+
+Every protected operation must verify that the authenticated user has permission to access the requested business and record.
+
+### User roles
+
+Support the following roles:
+
+**Administrator**
+- Full access to both businesses.
+- Create and manage users.
+- Assign business access.
+- Manage permissions.
+- Access reports separately for each business.
+- Manage backups and restoration.
+- Configure system settings.
+- View audit logs.
+
+**Manager**
+- Access only the assigned business.
+- Manage inventory.
+- Manage products.
+- Record sales and purchases.
+- Manage customers and suppliers.
+- Manage expenses.
+- View permitted business reports.
+- Manage permitted operational records.
+
+**Salesperson**
+- Access only the assigned business.
+- Record sales.
+- View permitted products.
+- Select customers.
+- Record customer payments where authorised.
+- View permitted transaction history.
+
+Allow the administrator to configure additional permissions.
+
+### Security
+
+- Hash passwords securely using an appropriate password-hashing algorithm.
+- Never store plain-text passwords.
+- Protect authenticated sessions.
+- Implement automatic session timeout.
+- Record login and logout activity.
+- Record failed login attempts.
+- Allow the administrator to reset passwords.
+- Allow the administrator to deactivate accounts.
+- Invalidate sessions when account access changes where necessary.
+
+---
+
+# 4. BUSINESS SELECTION AND NAVIGATION
+
+After administrator login, display a business selection page containing two professional business cards:
+
+1. Building Materials.
+2. Soft Drinks & Minerals.
+
+The administrator can enter either business independently.
+
+Workers must be redirected directly to their assigned business.
+
+Each business should have its own navigation menu and dashboard.
+
+Provide a secure logout function.
+
+Do not provide workers with a way to switch businesses.
+
+---
+
+# 5. BUILDING MATERIALS MODULE
+
+Build a complete building materials business management system.
+
+## 5.1 Product management
+
+Allow authorised users to:
+- Add products.
+- Edit products.
+- Deactivate products.
+- Assign categories.
+- Set product codes or SKUs.
+- Enter purchase prices.
+- Enter selling prices.
+- Set opening stock.
+- View current stock.
+- Set minimum stock levels.
+- Search and filter products.
+- View product history.
+
+Suggested product categories:
+- Cement.
+- Iron rods.
+- Roofing sheets.
+- Nails.
+- Paint.
+- Plumbing materials.
+- Electrical materials.
+- Blocks.
+- Tiles.
+- Pipes.
+- Other building materials.
+
+Support flexible units:
+- Bags.
+- Pieces.
+- Bundles.
+- Lengths.
+- Rolls.
+- Boxes.
+- Tonnes.
+
+## 5.2 Inventory management
+
+Track:
+- Opening stock.
+- Stock received.
+- Stock sold.
+- Stock returned.
+- Damaged stock.
+- Stock adjustments.
+- Current stock balance.
+
+Automatically update inventory after purchases and sales.
+
+Provide:
+- Low-stock alerts.
+- Out-of-stock alerts.
+- Stock valuation.
+- Inventory history.
+- Stock movement reports.
+
+Every stock adjustment must record the user, date, quantity and reason.
+
+Prevent accidental negative inventory unless an administrator explicitly permits it.
+
+## 5.3 Sales and point of sale
+
+Create a professional and easy-to-use POS interface.
+
+Users should be able to:
+- Search for products.
+- Add products to a sale.
+- Enter quantities.
+- Change quantities.
+- Remove items before completing a sale.
+- Calculate subtotals.
+- Apply authorised discounts.
+- Select customers.
+- Select payment methods.
+- Complete transactions.
+- Generate receipts.
+
+Supported payment methods:
+- Cash.
+- Mobile Money.
+- Bank transfer.
+- Credit.
+- Split payment.
+
+The POS must be fast and suitable for everyday use.
+
+## 5.4 Customer management
+
+Allow users to:
+- Register customers.
+- Edit customer details.
+- View purchase history.
+- View outstanding debts.
+- View payment history.
+- Generate customer statements.
+
+Customer information should include:
+- Name.
+- Telephone number.
+- Address where applicable.
+- Notes.
+
+## 5.5 Credit sales and debt management
+
+Credit sales are required.
+
+Track:
+- Sale reference.
+- Customer.
+- Total sale amount.
+- Amount paid.
+- Outstanding balance.
+- Due date.
+- Payment history.
+- Payment status.
+
+Support:
+- Full payments.
+- Partial payments.
+- Multiple payments against one sale.
+- Outstanding balances.
+- Overdue debt alerts.
+
+When a customer makes a payment, update the outstanding balance automatically.
+
+Credit sales must count as sales revenue but must not be incorrectly counted as money received.
+
+## 5.6 Supplier management
+
+Allow users to:
+- Register suppliers.
+- Record purchases.
+- Track supplier balances.
+- Record supplier payments.
+- View supplier statements.
+- View purchase history.
+
+Track:
+- Supplier name.
+- Contact information.
+- Purchase reference.
+- Products purchased.
+- Quantities.
+- Purchase cost.
+- Amount paid.
+- Outstanding balance.
+
+Support purchases made on credit and partial supplier payments.
+
+## 5.7 Expense management
+
+Allow users with permission to record:
+- Transport.
+- Rent.
+- Electricity.
+- Salaries.
+- Repairs.
+- Maintenance.
+- Other operating expenses.
+
+Each expense must have:
+- Category.
+- Amount.
+- Date.
+- Description.
+- Payment method.
+- Recorded-by user.
+
+---
+
+# 6. SOFT DRINKS & MINERALS MODULE
+
+Build a separate beverage business management system.
+
+## 6.1 Product management
+
+Support products such as:
+- Coca-Cola.
+- Fanta.
+- Sprite.
+- Malt drinks.
+- Bottled water.
+- Energy drinks.
+- Fruit drinks.
+- Other beverages.
+
+Each product must have:
+- Product name.
+- Brand.
+- Category.
+- Product code.
+- Purchase price.
+- Selling price.
+- Current stock.
+- Minimum stock.
+- Expiry date where applicable.
+
+## 6.2 Packaging and unit conversion
+
+This is an essential requirement.
+
+Allow products to be sold in different units, including:
+- Individual bottles.
+- Crates.
+- Packs.
+- Cans.
+- Other configurable units.
+
+Example:
+
+One crate contains 24 bottles.
+
+If a customer purchases one crate, the system must reduce stock by 24 bottles or by one crate, depending on the chosen inventory base unit.
+
+If a customer buys six individual bottles, the system must reduce the stock accordingly.
+
+Allow the administrator to configure packaging conversion quantities for each product.
+
+Avoid inaccurate stock calculations caused by different packaging formats.
+
+## 6.3 Full and empty container management
+
+Create a dedicated container tracking feature.
+
+Track:
+- Full crates.
+- Empty crates.
+- Full bottles.
+- Empty bottles.
+- Containers issued.
+- Containers returned.
+- Damaged containers.
+- Missing containers.
+
+Allow the business to record:
+- Customer container deposits.
+- Container charges.
+- Containers owed by customers.
+- Returned containers.
+- Outstanding container balances.
+
+Full beverage stock and empty container stock must be tracked separately.
+
+Provide a customer container-return history.
+
+## 6.4 Sales and POS
+
+Create a POS similar to the Building Materials module.
+
+Support:
+- Product search.
+- Crate sales.
+- Bottle sales.
+- Pack sales.
+- Automatic unit conversion.
+- Customer selection.
+- Discounts.
+- Cash payments.
+- Mobile Money.
+- Bank transfers.
+- Credit sales.
+- Split payments.
+- Receipt generation.
+
+## 6.5 Customer credit management
+
+Support credit sales and partial payments.
+
+Track:
+- Total sale.
+- Amount paid.
+- Outstanding balance.
+- Due dates.
+- Payment history.
+- Customer statements.
+
+Maintain separate debts for this business.
+
+## 6.6 Purchases and suppliers
+
+Record:
+- Supplier.
+- Products purchased.
+- Quantity.
+- Purchase cost.
+- Payment amount.
+- Outstanding supplier balance.
+- Purchase date.
+- Payment history.
+
+Support supplier credit and partial payments.
+
+## 6.7 Expiry and damaged products
+
+Track product expiry dates.
+
+Provide alerts for products approaching expiry.
+
+Allow authorised users to record:
+- Expired products.
+- Damaged products.
+- Missing products.
+- Written-off stock.
+
+Require a reason and create an audit entry for every adjustment.
+
+---
+
+# 7. FINANCIAL MANAGEMENT
+
+Calculate the following independently for each business:
+
+- Total sales revenue.
+- Cash received.
+- Mobile Money received.
+- Bank payments received.
+- Credit sales.
+- Customer debts.
+- Total purchases.
+- Supplier payments.
+- Supplier balances.
+- Operating expenses.
+- Cost of goods sold.
+- Gross profit.
+- Net profit.
+- Inventory value.
+
+Use weighted average costing for inventory valuation and cost of goods sold unless a technically justified alternative is needed.
+
+### Important accounting rules
+
+1. Credit sales increase sales revenue and customer debt.
+2. Credit sales do not automatically increase cash received.
+3. Customer payments reduce outstanding customer debt.
+4. Customer payments increase the appropriate payment-method totals.
+5. Purchases made on credit increase inventory and supplier debt.
+6. Supplier payments reduce supplier debt.
+7. Expenses must be included in net profit calculations.
+8. Stock adjustments must be reflected correctly in inventory valuation and financial reports.
+9. Reversed transactions must not continue contributing to financial totals.
+10. Avoid counting the same payment twice.
+
+Make the difference between revenue, cash received, profit and outstanding debt clear throughout the application.
+
+All dashboard figures and reports must be calculated from actual saved records.
+
+Never use hardcoded financial values.
+
+---
+
+# 8. DASHBOARD DESIGN
+
+Create a professional dashboard for each business.
+
+The layout must be clean, modern and informative.
+
+## 8.1 Dashboard header
+
+Display:
+- Business name.
+- Business logo or initials.
+- Welcome message.
+- Current date.
+- Logged-in user's name.
+- User role.
+- Notifications.
+- User profile.
+- Logout.
+
+Only administrators should have access to business switching.
+
+## 8.2 Quick actions
+
+Provide shortcuts for:
+- New Sale.
+- Add Product.
+- Record Purchase.
+- Add Customer.
+- Record Customer Payment.
+- Add Expense.
+- View Reports.
+
+## 8.3 Financial summary cards
+
+Display four prominent financial cards:
+
+1. Total Sales.
+2. Amount Received.
+3. Credit Sales.
+4. Estimated Profit.
+
+Each card must show an accurate figure from the database.
+
+## 8.4 Inventory overview
+
+Display:
+- Total Products.
+- Low Stock Items.
+- Out-of-Stock Items.
+- Estimated Inventory Value.
+
+## 8.5 Customer debts
+
+Display:
+- Total Outstanding Customer Debt.
+- Number of Customers Owing.
+- Overdue Debts.
+
+Provide a shortcut to the debtors list.
+
+## 8.6 Sales analytics
+
+Include charts for:
+- Daily sales.
+- Weekly sales.
+- Monthly sales.
+- Sales trends.
+- Best-selling products.
+
+Allow users to filter by reporting period.
+
+## 8.7 Recent transactions
+
+Display:
+- Recent sales.
+- Recent purchases.
+- Recent customer payments.
+- Recent expenses.
+- Recent stock adjustments.
+
+Include transaction references, dates, amounts and responsible users.
+
+## 8.8 Supplier overview
+
+Display:
+- Outstanding supplier balances.
+- Recent purchases.
+- Recent supplier payments.
+
+## 8.9 Daily cash summary
+
+Display:
+- Cash received.
+- Mobile Money received.
+- Bank payments received.
+- Credit sales.
+
+## 8.10 User activity and backup status
+
+Display:
+- Recent user activities.
+- Last successful backup.
+- Next scheduled backup reminder.
+
+The administrator must have access to the full activity history.
+
+---
+
+# 9. COLOUR SCHEME AND VISUAL IDENTITY
+
+Use the following colour palette:
+
+- Navy: #142D4E
+- Royal Blue: #2563EB
+- Teal: #0D9488
+- Off-white: #F8FAFC
+- Amber: #F59E0B
+- Red: #DC2626
+
+### Building Materials
+
+Use:
+- Navy.
+- Steel grey.
+- Royal blue.
+- Off-white.
+
+The visual identity should communicate reliability, structure and professionalism.
+
+### Soft Drinks & Minerals
+
+Use:
+- Teal.
+- Emerald.
+- White.
+- Light neutral backgrounds.
+
+The visual identity should feel fresh, clean and modern.
+
+Use amber for warnings and red for critical alerts.
+
+The design must include:
+- Professional typography.
+- Consistent spacing.
+- Clear navigation.
+- Responsive layouts.
+- Readable tables.
+- Modern cards.
+- Useful charts.
+- Clear forms.
+- Helpful empty states.
+- Loading and error states.
+
+Do not overcrowd the dashboard.
+
+---
+
+# 10. REPORTING SYSTEM
+
+All reports must remain separate for the two businesses.
+
+Support:
+- Daily reports.
+- Weekly reports.
+- Monthly reports.
+- Yearly reports.
+- Custom date ranges.
+
+### Building Materials reports
+
+- Sales report.
+- Purchase report.
+- Inventory report.
+- Stock movement report.
+- Customer debt report.
+- Supplier balance report.
+- Expense report.
+- Profit and loss report.
+- Payment report.
+- Best-selling products report.
+
+### Soft Drinks & Minerals reports
+
+- Sales report.
+- Purchase report.
+- Inventory report.
+- Stock movement report.
+- Empty-container report.
+- Customer debt report.
+- Supplier balance report.
+- Expiry and damaged-stock report.
+- Expense report.
+- Profit and loss report.
+- Payment report.
+- Best-selling products report.
+
+Allow authorised users to:
+- View reports.
+- Filter reports.
+- Print reports.
+- Export reports to PDF.
+- Export reports to CSV.
+- Export reports to Excel (XLSX).
+
+Every report must show:
+- Business name.
+- Reporting period.
+- Date generated.
+- Relevant totals.
+
+Never mix records from the two businesses.
+
+---
+
+# 11. RECEIPTS AND CUSTOMER STATEMENTS
+
+Generate professional sales receipts.
+
+Each receipt must include:
+- Business name.
+- Business contact details where configured.
+- Receipt number.
+- Date and time.
+- Customer name where applicable.
+- Products sold.
+- Quantities.
+- Unit prices.
+- Discounts.
+- Total amount.
+- Amount paid.
+- Outstanding balance.
+- Payment method.
+- Recorded-by user.
+
+Allow printing and PDF export.
+
+Generate customer statements containing:
+- Opening balance where applicable.
+- Sales.
+- Payments.
+- Outstanding balances.
+- Transaction dates.
+
+Use independent receipt numbering for each business.
+
+---
+
+# 12. AUDIT LOGS AND TRANSACTION CONTROL
+
+Create a detailed audit logging system.
+
+Record:
+- Login and logout.
+- Failed login attempts.
+- Product creation and editing.
+- Sales.
+- Purchases.
+- Customer payments.
+- Supplier payments.
+- Credit transactions.
+- Stock adjustments.
+- Expenses.
+- Report exports.
+- Backup activities.
+- Restore activities.
+- User creation and modification.
+- Permission changes.
+
+Each entry should include:
+- User.
+- Business.
+- Action.
+- Date and time.
+- Record reference.
+- Description.
+
+Completed financial transactions must not be silently deleted.
+
+If a completed transaction needs correction, provide a reversal or cancellation process.
+
+Require a reason and record the action in the audit log.
+
+---
+
+# 13. BACKUP AND RESTORE
+
+Create a complete backup management page accessible to administrators.
+
+## 13.1 Manual backup
+
+Allow administrators to:
+- Create backups manually.
+- Select a backup destination where supported.
+- Save backup files to USB drives or external storage.
+- View backup history.
+- Confirm successful backups.
+
+## 13.2 Scheduled backup reminders
+
+Implement an in-app backup reminder.
+
+Default schedule:
+- Every day.
+- 5:00 PM.
+- Africa/Accra timezone.
+
+Allow the administrator to:
+- Change the reminder time.
+- Change reminder frequency.
+- Disable the reminder.
+
+When the reminder becomes due while the application is open, display:
+
+"Your daily business backup is due. Would you like to back up your business records now?"
+
+Provide three options:
+
+1. Back Up Now.
+2. Remind Me Later.
+3. Dismiss.
+
+If the reminder becomes due while the application is closed, display the overdue reminder the next time the application opens.
+
+Important: An ordinary browser application cannot guarantee an alert while the browser and computer are closed. Only implement operating-system notifications if the selected runtime supports them and they have been tested.
+
+## 13.3 Backup contents
+
+Include:
+- Both businesses' records.
+- Products.
+- Inventory.
+- Sales.
+- Purchases.
+- Customers.
+- Suppliers.
+- Customer payments.
+- Supplier payments.
+- Debts.
+- Expenses.
+- User accounts and permissions.
+- Application settings.
+- Audit logs.
+
+Protect backup files because they contain sensitive business information.
+
+## 13.4 Restore
+
+Allow administrators to:
+- Select an existing backup.
+- Validate the backup.
+- Confirm restoration.
+- Restore saved records.
+- Receive a success or failure message.
+
+Never overwrite existing data without clear confirmation.
+
+Display the last successful backup date and time on the administrator dashboard.
+
+---
+
+# 14. GHANA-SPECIFIC CONFIGURATION
+
+Configure the application for use in Ghana.
+
+Default currency:
+- Ghana Cedi.
+- GHS.
+- GH₵.
+
+Default timezone:
+- Africa/Accra.
+
+Use appropriate Ghanaian currency and date formatting.
+
+Allow administrators to configure:
+- Business name.
+- Business address.
+- Contact number.
+- Email address.
+- Business logo.
+- Receipt details.
+- Currency settings where appropriate.
+
+---
+
+# 15. DATABASE DESIGN
+
+Create a proper relational database structure.
+
+Suggested entities include:
+
+### Shared application tables
+- users
+- roles
+- permissions
+- user_business_assignments
+- business_profiles
+- audit_logs
+- application_settings
+- backup_history
+
+### Business-specific tables
+- products
+- product_categories
+- inventory
+- inventory_movements
+- customers
+- suppliers
+- sales
+- sale_items
+- customer_payments
+- purchases
+- purchase_items
+- supplier_payments
+- expenses
+- receipts
+- container_inventory
+- container_movements
+- customer_container_balances
+- stock_adjustments
+
+Use appropriate primary keys, foreign keys, constraints and indexes.
+
+Every business-specific record must be associated with the correct business ID.
+
+The database must enforce business isolation through backend queries and access-control checks.
+
+Do not depend on frontend filtering alone.
+
+Use database transactions for financial operations so that incomplete sales or payments cannot leave inconsistent records.
+
+Maintain an audit trail for important changes.
+
+---
+
+# 16. APPLICATION PAGES
+
+Build the following pages and ensure every page is functional.
+
+### Authentication
+- Login.
+- Initial administrator setup.
+- Password change.
+
+### Administrator
+- Admin dashboard.
+- Business management.
+- User management.
+- Role and permission management.
+- Backup and restore.
+- Audit logs.
+- Application settings.
+
+### Building Materials
+- Dashboard.
+- Products.
+- Categories.
+- Inventory.
+- Stock movements.
+- New sale.
+- Sales history.
+- Customers.
+- Customer debts.
+- Customer payments.
+- Suppliers.
+- Purchases.
+- Supplier balances.
+- Expenses.
+- Reports.
+
+### Soft Drinks & Minerals
+- Dashboard.
+- Products.
+- Categories.
+- Inventory.
+- Stock movements.
+- Container management.
+- New sale.
+- Sales history.
+- Customers.
+- Customer debts.
+- Customer payments.
+- Suppliers.
+- Purchases.
+- Supplier balances.
+- Expenses.
+- Expiry management.
+- Damaged stock.
+- Reports.
+
+---
+
+# 17. DEVELOPMENT APPROACH
+
+Build the application in phases.
+
+### PHASE 1: FOUNDATION
+- Set up project architecture.
+- Implement database.
+- Implement authentication.
+- Create administrator setup.
+- Implement business-specific user assignment.
+- Implement role-based permissions.
+- Implement strict business data isolation.
+- Implement persistent local storage.
+
+### PHASE 2: BUILDING MATERIALS
+- Product management.
+- Inventory.
+- Sales.
+- Purchases.
+- Customers.
+- Suppliers.
+- Credit management.
+- Expenses.
+
+### PHASE 3: SOFT DRINKS & MINERALS
+- Product management.
+- Inventory.
+- Packaging conversions.
+- Full and empty container management.
+- Sales.
+- Purchases.
+- Customers.
+- Suppliers.
+- Credit management.
+- Expiry and damaged-stock management.
+
+### PHASE 4: FINANCIAL MANAGEMENT
+- Financial calculations.
+- Dashboard cards.
+- Charts.
+- Reports.
+- Receipts.
+- Customer statements.
+- PDF, CSV and Excel exports.
+
+### PHASE 5: ADMINISTRATION
+- User management.
+- Audit logs.
+- Backup and restore.
+- Scheduled backup reminders.
+- Application settings.
+
+### PHASE 6: TESTING
+Test all major features before declaring the application complete.
+
+---
+
+# 18. TESTING AND ACCEPTANCE CRITERIA
+
+The application must pass these tests:
+
+### Authentication and security
+1. Administrator can access both businesses.
+2. A Building Materials worker can only access Building Materials.
+3. A Soft Drinks & Minerals worker can only access Soft Drinks & Minerals.
+4. Workers cannot access another business by changing URLs.
+5. Workers cannot access another business through direct API requests.
+6. Deactivated users cannot log in.
+7. Changing a user's assignment updates their access correctly.
+8. Passwords are securely stored.
+
+### Business operations
+9. Products can be created and edited.
+10. Sales update inventory correctly.
+11. Purchases update inventory correctly.
+12. Credit sales are recorded accurately.
+13. Partial customer payments work.
+14. Supplier credit and partial supplier payments work.
+15. Expenses are recorded accurately.
+16. Container conversions work correctly.
+17. Full and empty containers are tracked independently.
+18. Damaged and expired products can be recorded.
+
+### Financial accuracy
+19. Sales revenue is calculated correctly.
+20. Cash received is calculated correctly.
+21. Customer debts are accurate.
+22. Supplier balances are accurate.
+23. Cost of goods sold is accurate.
+24. Profit calculations are accurate.
+25. Reversed transactions are excluded from active financial totals.
+26. No payment is counted twice.
+
+### Reports and administration
+27. Reports remain separate for each business.
+28. Receipts can be generated.
+29. Customer statements can be generated.
+30. Reports can be printed and exported.
+31. Audit logs record important actions.
+32. Backups include all relevant business records.
+33. Backup restoration works.
+34. Scheduled backup reminders work as specified.
+
+### Offline and persistence
+35. Records remain saved after closing the application.
+36. Records remain available after restarting the computer.
+37. Core operations work without an internet connection.
+38. No important business data is stored only in temporary browser memory.
+
+---
+
+# 19. FINAL INSTRUCTIONS
+
+Build a complete, professional and reliable business management system.
+
+Do not stop at a landing page, dashboard mockup or static interface.
+
+All forms must save real records. All buttons must work. All reports must use actual database records. All financial calculations must be accurate.
+
+Prioritise security, data integrity, offline operation and ease of use.
+
+Implement strict business-specific authentication so workers can only access the business assigned to their accounts by the administrator.
+
+Do not mix financial records or reports between the two businesses.
+
+Do not use hardcoded sample statistics as real business figures.
+
+If sample records are needed for demonstration, clearly label them and allow them to be removed.
+
+If the selected platform cannot support a technical requirement, explain the limitation and provide a workable alternative.
+
+Start by establishing the architecture, database and authentication system. Then implement the two business modules in the development phases above.
+
+Before declaring the project complete, test the acceptance criteria and fix any failures.
+
+The final application must be suitable for actual daily business operations in Ghana.
